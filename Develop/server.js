@@ -13,3 +13,14 @@ app.use(express.static("public"));
 // --------------------Sets up the Express app to handle data parsing-------
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Routes
+// =============================================================
+// -----------------display html file on the web----------------------------
+app.get("/", function (req, res) {
+  // transfer the file at the given path
+  res.sendFile(path.join(__dirname, "/public/index.html"));
+});
+app.get("/notes", function (req, res) {
+  res.sendFile(path.join(__dirname, "/public/notes.html"));
+});
