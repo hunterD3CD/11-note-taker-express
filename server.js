@@ -26,6 +26,38 @@ app.get("/notes", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
 
+// Data
+// =============================================================
+app
+  .route("/api/notes")
+  .get(function (req, res) {
+    res.json(databse);
+  })
+
+  .post(function (req, res) {
+    let dbFilePath = path.join(__dirname, "/db/db.json");
+    let addNote = req.body;
+    let maxId = 99;
+
+    for (let i = 0; i < databse.length; i++) {
+      let existNote = database[i];
+      if (existNote.id > maxId) {
+        maxId = existNote.id;
+      }
+    }
+    addNote.id = maxId + 1;
+    database.push(addNote);
+
+    // use fs module to update db.json file with added note
+    fs.writeFile(dbFilePath, JSON.stringify(database), function (err) {
+      if (err) {
+        return console.log(err);
+      }
+      console.log(" the note is added to the databse");
+    });
+    res.json(addNote);
+  });
+
 // Listener
 // =============================================================
 app.listen(PORT, () => {
