@@ -32,22 +32,22 @@ app
   .route("/api/notes")
   // GET request serve the purpose of retrieving data from server and send it back to the client
   .get(function (req, res) {
-    res.json(databse);
+    res.json(database);
   })
   // -----------------import the new note to the database file------------------
   .post(function (req, res) {
     let dbFilePath = path.join(__dirname, "/db/db.json");
-    let addNote = req.body;
+    let newNote = req.body;
     let maxId = 99;
     // For loop maxID
-    for (let i = 0; i < databse.length; i++) {
+    for (let i = 0; i < database.length; i++) {
       let existNote = database[i];
       if (existNote.id > maxId) {
         maxId = existNote.id;
       }
     }
-    addNote.id = maxId + 1;
-    database.push(addNote);
+    newNote.id = maxId + 1;
+    database.push(newNote);
 
     // use fs module to update db.json file with added note
     fs.writeFile(dbFilePath, JSON.stringify(database), function (err) {
@@ -56,7 +56,7 @@ app
       }
       console.log("the note is added to the database");
     });
-    res.json(addNote);
+    res.json(newNote);
   });
 // --------------------remove the note from the database file-------------------
 app.delete("/api/notes/:id", function (req, res) {
